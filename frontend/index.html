@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Decentralized Voting System</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 0; background: #f5f7fb; color: #111827; }
+      .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+      .card { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+      h1, h2, h3 { margin-top: 0; }
+      .row { display: flex; gap: 12px; flex-wrap: wrap; }
+      input, button, textarea { padding: 10px; border-radius: 8px; border: 1px solid #d1d5db; }
+      button { cursor: pointer; background: #2563eb; color: white; border: none; }
+      button.secondary { background: #6b7280; }
+      button.danger { background: #dc2626; }
+      button.success { background: #16a34a; }
+      ul { padding-left: 20px; }
+      .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+      .tab { background: #e5e7eb; color: #111827; }
+      .tab.active { background: #1f2937; color: #fff; }
+      .status { font-weight: 600; }
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+      code { background: #eef2ff; padding: 2px 6px; border-radius: 6px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Blockchain Decentralized Voting (MVP)</h1>
+      <div class="card">
+        <button id="connectWalletBtn">Connect MetaMask</button>
+        <p>Connected Wallet: <span id="wallet" class="status">Not connected</span></p>
+        <p>Contract: <code id="contractAddress"></code></p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="voter">Voter Dashboard</button>
+        <button class="tab" data-tab="authority">Election Authority</button>
+        <button class="tab" data-tab="public">Public Results</button>
+      </div>
+
+      <section id="voter" class="tab-content">
+        <div class="grid-2">
+          <div class="card">
+            <h2>Off-chain Voter Registration</h2>
+            <div class="row">
+              <input id="voterName" placeholder="Full Name" />
+              <input id="voterNationalId" placeholder="National ID" />
+              <input id="voterWalletAddress" placeholder="Wallet Address" />
+            </div>
+            <button id="registerVoterBtn">Submit Registration</button>
+            <p id="voterRegisterStatus"></p>
+          </div>
+
+          <div class="card">
+            <h2>Cast Vote</h2>
+            <p>Only approved/registered wallets can vote once.</p>
+            <div id="candidateListForVote"></div>
+            <p id="voteStatus"></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="authority" class="tab-content" style="display:none;">
+        <div class="grid-2">
+          <div class="card">
+            <h2>Candidate Approval + On-chain Add</h2>
+            <div class="row">
+              <input id="candidateName" placeholder="Candidate Name" />
+              <input id="candidateWallet" placeholder="Candidate Wallet" />
+            </div>
+            <textarea id="candidateManifesto" placeholder="Manifesto (optional)"></textarea>
+            <div class="row">
+              <button id="registerCandidateBtn">Register Candidate (Off-chain)</button>
+              <button id="refreshCandidatesBtn" class="secondary">Refresh Candidates</button>
+            </div>
+            <ul id="pendingCandidates"></ul>
+          </div>
+
+          <div class="card">
+            <h2>Voter Approvals</h2>
+            <button id="refreshVotersBtn" class="secondary">Refresh Voters</button>
+            <ul id="pendingVoters"></ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Election Controls (On-chain)</h2>
+          <div class="row">
+            <button id="startElectionBtn" class="success">Start Election</button>
+            <button id="endElectionBtn" class="danger">End Election</button>
+            <button id="refreshResultsBtn" class="secondary">Refresh Results</button>
+          </div>
+          <p id="authorityStatus"></p>
+          <div id="authorityResults"></div>
+        </div>
+      </section>
+
+      <section id="public" class="tab-content" style="display:none;">
+        <div class="card">
+          <h2>Public Transparency</h2>
+          <button id="refreshPublicBtn">View Results</button>
+          <div id="publicResults"></div>
+          <h3>Winner</h3>
+          <p id="winner"></p>
+        </div>
+      </section>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
